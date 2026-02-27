@@ -1,0 +1,178 @@
+[{
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "Headphones/earbuds",
+    "item": "headphones",
+    "properties": [
+      "good quality"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "assignment book/planner",
+    "item": "planner",
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "Tennis shoes for Phy. Ed.",
+    "item": "tennis shoes",
+    "properties": [
+      "not crocs",
+      "not hey dudes"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "Clothes for Phy. Ed."
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "1 pocket folder red (English)",
+    "item": "folder",
+    "properties": [
+      "pocket",
+      "red"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "1 pocket folder blue (math)",
+    "item": "folder",
+    "properties": [
+      "pocket",
+      "blue"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "1 pocket folder yellow (history)",
+    "item": "folder",
+    "properties": [
+      "pocket",
+      "yellow"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "1 pocket folder green (science)",
+    "item": "folder",
+    "properties": [
+      "pocket",
+      "green",
+      "durable"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "1 pocket folder purple",
+    "item": "folder",
+    "properties": [
+      "pocket",
+      "purple"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "1 colored spiral notebook red (English)",
+    "item": "notebook",
+    "properties": [
+      "spiral bound",
+      "red"
+    ],
+    "quantity": 1,
+    "notes": "some students may want two notebooks for English"
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "1 colored spiral notebook blue (math)",
+    "item": "notebook",
+    "properties": [
+      "spiral bound",
+      "blue"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "1 colored spiral notebook yellow college ruled (history)",
+    "item": "notebook",
+    "properties": [
+      "spiral bound",
+      "yellow",
+      "college ruled"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "1 colored composition notebook green (science)",
+    "item": "notebook",
+    "properties": [
+      "composition",
+      "green"
+    ],
+    "quantity": 1,
+    "notes": "composition preferred"
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "1 colored spiral notebook purple",
+    "item": "notebook",
+    "properties": [
+      "spiral bound",
+      "purple"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "loose leaf paper",
+    "item": "pack of loose leaf paper",
+    "quantity": 1,
+    "notes": "requested by math"
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "Scissors",
+    "item": "scissors",
+    "properties": [
+      "7 inch"
+    ],
+    "quantity": 1
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "6 glue sticks",
+    "item": "glue stick",
+    "quantity": 6
+  },
+  {
+    "school": "MAHS",
+    "grade": "HS",
+    "description": "Sketchbook ",
+    "quantity": 1
+  }]
