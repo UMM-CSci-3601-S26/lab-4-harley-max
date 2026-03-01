@@ -39,7 +39,7 @@ export default [{
         }],
 
         "no-underscore-dangle": ["error", {
-            allow: ["_id"],
+            allow: ["_id", "_liveAnnouncer"],
         }],
 
         // The following few rules are more about how the code looks than how it functions,

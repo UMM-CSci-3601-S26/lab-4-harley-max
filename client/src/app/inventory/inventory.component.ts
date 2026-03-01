@@ -1,6 +1,6 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, ViewChild, inject} from '@angular/core';
-import { MatTable, MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 
@@ -25,22 +25,18 @@ const DUMMY_DATA: dummyInventoryData[] = [
 
 @Component({
   selector: 'app-inventory',
-  imports: [
-   MatTableModule,
-   MatCardModule,
-   MatSortModule
-  ],
+  imports: [MatTableModule, MatCardModule, MatSortModule],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss',
 })
 
-export class InventoryComponent {
+export class InventoryComponent implements AfterViewInit {
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   displayedColumns: string[] = ['item', 'description', 'brand', 'color', 'size', 'type', 'material', 'quantity', 'count', 'notes'];
   dataSource = new MatTableDataSource(DUMMY_DATA);
 
-   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
