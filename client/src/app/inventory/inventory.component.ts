@@ -61,24 +61,20 @@ export class InventoryComponent {
   }
 
   // filters (optional)
-  school = signal<string | undefined>(undefined);
-  grade = signal<string | undefined>(undefined);
   item = signal<string | undefined>(undefined);
   description = signal<string | undefined>(undefined);
   quantity = signal<number | undefined>(undefined);
 
   errMsg = signal<string | undefined>(undefined);
 
-  private school$ = toObservable(this.school);
-  private grade$ = toObservable(this.grade);
   private item$ = toObservable(this.item);
   private description$ = toObservable(this.description);
   private quantity$ = toObservable(this.quantity);
 
   serverFilteredInventory = toSignal(
-    combineLatest([this.school$, this.grade$, this.item$, this.description$, this.quantity$]).pipe(
-      switchMap(([school, grade, item, description, quantity]) =>
-        this.inventoryService.getInventory({ school, grade, item, description, quantity })
+    combineLatest([this.item$, this.description$, this.quantity$]).pipe(
+      switchMap(([ item, description, quantity]) =>
+        this.inventoryService.getInventory({ item, description, quantity })
       ),
       catchError((err) => {
         const msg = `Problem contacting the server - Error Code: ${err.status}\nMessage: ${err.message}`;
