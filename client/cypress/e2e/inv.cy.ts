@@ -31,7 +31,7 @@ describe('Inventory', () => {
     page.getSidenav()
       .should('be.hidden');
     nextTick(1000)
-    cy.contains('td', 'Test Item').should('exist'); // First item in the table
+    page.getInventoryRow().first().should('contain', 'Bowls') // First item in the table
     // Note: Once 'test item' gets removed, this needs to be updated (possibly update to not check the first?)
   });
 
