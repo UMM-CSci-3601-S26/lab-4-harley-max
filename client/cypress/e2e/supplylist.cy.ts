@@ -44,10 +44,11 @@ describe('Supply List', () => {
     nextTick(300)
     cy.contains('mat-list-item', 'Backpack').should('exist');
   });
+
   // Cypress tests to ensure the filter boxes are there
   // for all specification fields
 
-  it('should have specification filters', () => {
+  it('Should have specification filters', () => {
     page.getSidenavButton().click();
     page.getNavLink('Supply List').click();
     cy.url().should('match', /\/supplylist$/);

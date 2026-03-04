@@ -62,7 +62,7 @@ describe('Inventory', () => {
   // Cypress tests to ensure the filter boxes (including clear button) are there
   // for all specification fields
 
-  it('should have specification filters', () => {
+  it('Should have specification filters', () => {
     page.getSidenavButton().click();
     page.getNavLink('Inventory').click();
     cy.url().should('match', /\/inventory$/);
