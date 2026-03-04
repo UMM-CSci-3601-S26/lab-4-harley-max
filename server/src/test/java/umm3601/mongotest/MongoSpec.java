@@ -1,7 +1,7 @@
+// Packages
 package umm3601.mongotest;
 
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
+// Static Imports
 import static com.mongodb.client.model.Filters.gt;
 import static com.mongodb.client.model.Projections.excludeId;
 import static com.mongodb.client.model.Projections.fields;
@@ -10,10 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+// Java Imports
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// Com Imports
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
@@ -26,37 +28,19 @@ import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Sorts;
 
+// Org Imports
 import org.bson.Document;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * Some simple "tests" that demonstrate our ability to
- * connect to a Mongo database and run some basic queries
- * against it.
- * <p>
- * Note that none of these are actually tests of any of our
- * code; they are mostly demonstrations of the behavior of
- * the MongoDB Java libraries. Thus if they test anything,
- * they test that code, and perhaps our understanding of it.
- * <p>
- * To test "our" code we'd want the tests to confirm that
- * the behavior of methods in things like the UserController
- * do the "right" thing.
- */
-// The tests here include a ton of "magic numbers" (numeric constants).
-// It wasn't clear to me that giving all of them names would actually
-// help things. The fact that it wasn't obvious what to call some
-// of them says a lot. Maybe what this ultimately means is that
-// these tests can/should be restructured so the constants (there are
-// also a lot of "magic strings" that Checkstyle doesn't actually
-// flag as a problem) make more sense.
+// Test Class
+//Simple tests to verify we can connect to MongoDB and do basic queries.
 @SuppressWarnings({"MagicNumber"})
 class MongoSpec {
 
-  private MongoCollection<Document> userDocuments;
+  private MongoCollection<Document> inventoryDocuments;
 
   private static MongoClient mongoClient;
   private static MongoDatabase db;
@@ -82,164 +66,125 @@ class MongoSpec {
 
   @BeforeEach
   void clearAndPopulateDB() {
-    userDocuments = db.getCollection("users");
-    userDocuments.drop();
-    List<Document> testUsers = new ArrayList<>();
-    testUsers.add(
+    inventoryDocuments = db.getCollection("inventory");
+    inventoryDocuments.drop();
+    List<Document> testItems = new ArrayList<>();
+    testItems.add(
       new Document()
-        .append("name", "Chris")
-        .append("age", 25)
-        .append("company", "UMM")
-        .append("email", "chris@this.that"));
-    testUsers.add(
+        .append("item", "Test Item")
+        .append("description", "This is a test item.")
+        .append("brand", "Test")
+        .append("color", "Test")
+        .append("size", "Test")
+        .append("type", "Test")
+        .append("material", "Test")
+        .append("count", 50)
+        .append("quantity", 100)
+        .append("notes", "This is a test item."));
+    testItems.add(
       new Document()
-        .append("name", "Pat")
-        .append("age", 37)
-        .append("company", "IBM")
-        .append("email", "pat@something.com"));
-    testUsers.add(
-      new Document()
-        .append("name", "Jamie")
-        .append("age", 37)
-        .append("company", "Frogs, Inc.")
-        .append("email", "jamie@frogs.com"));
+        .append("item", "Backpack")
+        .append("description", "Backpack")
+        .append("brand", "N/A")
+        .append("color", "N/A")
+        .append("size", "N/A")
+        .append("type", "N/A")
+        .append("material", "N/A")
+        .append("count", 1)
+        .append("quantity", 10)
+        .append("notes", "N/A"));
 
-    userDocuments.insertMany(testUsers);
+    inventoryDocuments.insertMany(testItems);
   }
 
   private List<Document> intoList(MongoIterable<Document> documents) {
-    List<Document> users = new ArrayList<>();
-    documents.into(users);
-    return users;
+    List<Document> items = new ArrayList<>();
+    documents.into(items);
+    return items;
   }
 
-  private int countUsers(FindIterable<Document> documents) {
-    List<Document> users = intoList(documents);
-    return users.size();
-  }
-
-  @Test
-  void shouldBeThreeUsers() {
-    FindIterable<Document> documents = userDocuments.find();
-    int numberOfUsers = countUsers(documents);
-    assertEquals(3, numberOfUsers, "Should be 3 total users");
+  private int countItems(FindIterable<Document> documents) {
+    List<Document> items = intoList(documents);
+    return items.size();
   }
 
   @Test
-  void shouldBeOneChris() {
-    FindIterable<Document> documents = userDocuments.find(eq("name", "Chris"));
-    int numberOfUsers = countUsers(documents);
-    assertEquals(1, numberOfUsers, "Should be 1 Chris");
+  void shouldBeTwoItems() {
+    FindIterable<Document> documents = inventoryDocuments.find();
+    int numberOfItems = countItems(documents);
+    assertEquals(2, numberOfItems, "Should be 2 total items");
   }
 
   @Test
-  void shouldBeTwoOver25() {
-    FindIterable<Document> documents = userDocuments.find(gt("age", 25));
-    int numberOfUsers = countUsers(documents);
-    assertEquals(2, numberOfUsers, "Should be 2 over 25");
+  void shouldBeOneOver10Quantity() {
+    FindIterable<Document> documents = inventoryDocuments.find(gt("quantity", 10));
+    int numberOfItems = countItems(documents);
+    assertEquals(1, numberOfItems, "Should be 1 item with quantity over 10");
   }
 
   @Test
-  void over25SortedByName() {
+  void over10QuantitySortedByItem() {
     List<Document> docs
-      = userDocuments.find(gt("age", 25))
-      .sort(Sorts.ascending("name"))
-      .into(new ArrayList<>());
-    assertEquals(2, docs.size(), "Should be 2");
-    assertEquals("Jamie", docs.get(0).get("name"), "First should be Jamie");
-    assertEquals("Pat", docs.get(1).get("name"), "Second should be Pat");
-  }
-
-  @Test
-  void over25AndIbmers() {
-    List<Document> docs
-      = userDocuments.find(and(gt("age", 25),
-      eq("company", "IBM")))
+      = inventoryDocuments.find(gt("quantity", 10))
+      .sort(Sorts.ascending("item"))
       .into(new ArrayList<>());
     assertEquals(1, docs.size(), "Should be 1");
-    assertEquals("Pat", docs.get(0).get("name"), "First should be Pat");
+    assertEquals("Test Item", docs.get(0).get("item"), "The only item should be Test Item");
   }
 
   @Test
-  void justNameAndEmail() {
+  void justItemAndBrand() {
     List<Document> docs
-      = userDocuments.find().projection(fields(include("name", "email")))
+      = inventoryDocuments.find().projection(fields(include("item", "brand")))
       .into(new ArrayList<>());
-    assertEquals(3, docs.size(), "Should be 3");
-    assertEquals("Chris", docs.get(0).get("name"), "First should be Chris");
-    assertNotNull(docs.get(0).get("email"), "First should have email");
-    assertNull(docs.get(0).get("company"), "First shouldn't have 'company'");
+    assertEquals(2, docs.size(), "Should be 2");
+    assertEquals("Test Item", docs.get(0).get("item"), "First should be Test Item");
+    assertNotNull(docs.get(0).get("brand"), "First should have brand");
+    assertNull(docs.get(0).get("type"), "First shouldn't have 'type'");
     assertNotNull(docs.get(0).get("_id"), "First should have '_id'");
   }
 
   @Test
-  void justNameAndEmailNoId() {
+  void justItemAndBrandNoId() {
     List<Document> docs
-      = userDocuments.find()
-      .projection(fields(include("name", "email"), excludeId()))
+      = inventoryDocuments.find()
+      .projection(fields(include("item", "brand"), excludeId()))
       .into(new ArrayList<>());
-    assertEquals(3, docs.size(), "Should be 3");
-    assertEquals("Chris", docs.get(0).get("name"), "First should be Chris");
-    assertNotNull(docs.get(0).get("email"), "First should have email");
-    assertNull(docs.get(0).get("company"), "First shouldn't have 'company'");
+    assertEquals(2, docs.size(), "Should be 2");
+    assertEquals("Test Item", docs.get(0).get("item"), "First should be Test Item");
+    assertNotNull(docs.get(0).get("brand"), "First should have brand");
+    assertNull(docs.get(0).get("type"), "First shouldn't have 'type'");
     assertNull(docs.get(0).get("_id"), "First should not have '_id'");
   }
 
   @Test
-  void justNameAndEmailNoIdSortedByCompany() {
+  void justItemAndBrandNoIdSortedByType() {
     List<Document> docs
-      = userDocuments.find()
-      .sort(Sorts.ascending("company"))
-      .projection(fields(include("name", "email"), excludeId()))
+      = inventoryDocuments.find()
+      .sort(Sorts.ascending("type"))
+      .projection(fields(include("item", "brand"), excludeId()))
       .into(new ArrayList<>());
-    assertEquals(3, docs.size(), "Should be 3");
-    assertEquals("Jamie", docs.get(0).get("name"), "First should be Jamie");
-    assertNotNull(docs.get(0).get("email"), "First should have email");
-    assertNull(docs.get(0).get("company"), "First shouldn't have 'company'");
+    assertEquals(2, docs.size(), "Should be 2");
+    assertEquals("Backpack", docs.get(0).get("item"), "First should be Backpack");
+    assertNotNull(docs.get(0).get("brand"), "First should have brand");
+    assertNull(docs.get(0).get("type"), "First shouldn't have 'type'");
     assertNull(docs.get(0).get("_id"), "First should not have '_id'");
   }
 
   @Test
-  void ageCounts() {
+  void quantityCounts() {
     List<Document> docs
-      = userDocuments.aggregate(
+      = inventoryDocuments.aggregate(
       Arrays.asList(
-        /*
-         * Groups data by the "age" field, and then counts
-         * the number of documents with each given age.
-         * This creates a new "constructed document" that
-         * has "age" as it's "_id", and the count as the
-         * "ageCount" field.
-         */
-        Aggregates.group("$age",
-          Accumulators.sum("ageCount", 1)),
+        Aggregates.group("$quantity",
+          Accumulators.sum("quantityCount", 1)),
         Aggregates.sort(Sorts.ascending("_id"))
       )
-    ).into(new ArrayList<>()); //Attempts to coerce the resulting AggregateIterable object into an ArrayList.
-    assertEquals(2, docs.size(), "Should be two distinct ages");
-    assertEquals(25, docs.get(0).get("_id"));
-    assertEquals(1, docs.get(0).get("ageCount"));
-    assertEquals(37, docs.get(1).get("_id"));
-    assertEquals(2, docs.get(1).get("ageCount"));
+    ).into(new ArrayList<>());
+    assertEquals(2, docs.size(), "Should be two distinct quantities");
+    assertEquals(10, docs.get(0).get("_id"));
+    assertEquals(1, docs.get(0).get("quantityCount"));
+    assertEquals(100, docs.get(1).get("_id"));
+    assertEquals(1, docs.get(1).get("quantityCount"));
   }
-
-  @Test
-  void averageAge() {
-    List<Document> docs
-      = userDocuments.aggregate(
-      Arrays.asList(
-        Aggregates.group("$company",
-          Accumulators.avg("averageAge", "$age")),
-        Aggregates.sort(Sorts.ascending("_id"))
-      )).into(new ArrayList<>());
-    assertEquals(3, docs.size(), "Should be three companies");
-
-    assertEquals("Frogs, Inc.", docs.get(0).get("_id"));
-    assertEquals(37.0, docs.get(0).get("averageAge"));
-    assertEquals("IBM", docs.get(1).get("_id"));
-    assertEquals(37.0, docs.get(1).get("averageAge"));
-    assertEquals("UMM", docs.get(2).get("_id"));
-    assertEquals(25.0, docs.get(2).get("averageAge"));
-  }
-
 }

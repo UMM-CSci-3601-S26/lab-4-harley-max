@@ -1,12 +1,14 @@
+// Packages
 package umm3601;
+
+// Imports
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import umm3601.user.UserController;
 import umm3601.Inventory.InventoryController;
 import umm3601.supplylist.SupplyListController;
 
+// Main
 public class Main {
-
   public static void main(String[] args) {
     // Get the MongoDB address and database name from environment variables and
     // if they aren't set, use the defaults of "localhost" and "dev".
@@ -60,11 +62,9 @@ public class Main {
       // the `Controller` interface.
       //
       // You can also remove this UserController once you don't need it.
-      new UserController(database),
       new InventoryController(database),
       new SupplyListController(database)
     };
     return controllers;
   }
-
 }

@@ -1,9 +1,6 @@
+// Angular Imports
 import { ComponentFixture, TestBed, waitForAsync, tick, fakeAsync } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { Observable } from 'rxjs';
-import { MockInventoryService } from 'src/testing/inventory.service.mock';
-import { Inventory } from './inventory';
-import { InventoryComponent } from './inventory.component';
 import { InventoryService } from './inventory.service';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -11,6 +8,14 @@ import { MatPaginatorHarness } from '@angular/material/paginator/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatTableHarness } from '@angular/material/table/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
+
+// RxJS Imports
+import { Observable } from 'rxjs';
+
+// Inventory Imports
+import { MockInventoryService } from 'src/testing/inventory.service.mock';
+import { Inventory } from './inventory';
+import { InventoryComponent } from './inventory.component';
 
 
 describe('Inventory Table', () => {

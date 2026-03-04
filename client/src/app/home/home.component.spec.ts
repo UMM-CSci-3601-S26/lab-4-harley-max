@@ -25,7 +25,7 @@ describe('Home', () => {
 
   it('It has the basic home page text', () => {
     fixture.detectChanges();
-    expect(el.textContent).toContain('This is a home page! It doesn\'t do anything!');
+    expect(el.textContent).toContain('Welcome to the home page! In the future, information about the site, how it works, and how to use it will be placed here. For now, feel free to access the additional pages via the side navigation on the left!');
     expect(component).toBeTruthy();
   });
 

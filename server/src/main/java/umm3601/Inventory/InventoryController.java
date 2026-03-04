@@ -1,26 +1,39 @@
+// Packages
 package umm3601.Inventory;
 
+// Static Imports
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.regex;
+
+// Java Imports
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+// Org Imports
 import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.mongojack.JacksonMongoCollection;
+
+// Com Imports
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+
+// IO Imports
 import io.javalin.Javalin;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
+
+// Misc Imports
 import umm3601.Controller;
 
+// Controller
 public class InventoryController implements Controller {
 
   private static final String API_INVENTORY = "/api/inventory";
@@ -114,6 +127,7 @@ public class InventoryController implements Controller {
         throw new BadRequestResponse("quantity must be an integer.");
       }
     }
+
     if (ctx.queryParamMap().containsKey(NOTES_KEY)) {
       Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(NOTES_KEY)), Pattern.CASE_INSENSITIVE);
       filters.add(regex(NOTES_KEY, pattern));
@@ -126,7 +140,6 @@ public class InventoryController implements Controller {
       Pattern pattern = Pattern.compile(Pattern.quote(ctx.queryParam(TYPE_KEY)), Pattern.CASE_INSENSITIVE);
       filters.add(regex(TYPE_KEY, pattern));
     }
-
 
     return filters.isEmpty() ? new Document() : and(filters);
   }

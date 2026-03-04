@@ -9,6 +9,10 @@ const page = new SupplyListPage();
 // }
 
 describe('Supply List', () => {
+  before(() => {
+    cy.task('seed:database');
+  });
+
   beforeEach(() => page.navigateTo());
 
   it('Should have the correct title', () => {
@@ -42,12 +46,13 @@ describe('Supply List', () => {
     page.getSidenav()
       .should('be.hidden');
     nextTick(300)
-    cy.contains('mat-list-item', 'Backpack').should('exist');
+    cy.contains('mat-card', 'Herman').should('exist');
   });
+
   // Cypress tests to ensure the filter boxes are there
   // for all specification fields
 
-  it('should have specification filters', () => {
+  it('Should have specification filters', () => {
     page.getSidenavButton().click();
     page.getNavLink('Supply List').click();
     cy.url().should('match', /\/supplylist$/);
@@ -90,7 +95,7 @@ describe('Supply List', () => {
     });
   });
 
-  it('should have grade filter', () => {
+  it('Should have grade filter', () => {
     page.getSidenavButton().click();
     page.getNavLink('Supply List').click();
     cy.url().should('match', /\/supplylist$/);
@@ -113,4 +118,3 @@ describe('Supply List', () => {
 function nextTick(ms: number) {
   cy.wait(ms);
 }
-

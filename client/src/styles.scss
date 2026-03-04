@@ -53,6 +53,75 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
+// Custom palette maps
+
+// #7a0019
+$custom-maroon: (
+  50: #F5E6EA,
+  50-contrast: #000000,
+  100: #E8C1C9,
+  100-contrast: #000000,
+  200: #CA878E,
+  200-contrast: #000000,
+  300: #B35B65,
+  300-contrast: #ffffff,
+  400: #B73846,
+  400-contrast: #ffffff,
+  500: #B51F2F,
+  500-contrast: #ffffff,
+  600: #A7172D,
+  600-contrast: #ffffff,
+  700: #970E28,
+  700-contrast: #ffffff,
+  800: #8A0721,
+  800-contrast: #ffffff,
+  900: #7A0018,
+  900-contrast: #ffffff,
+  A100: #B51F2F,
+  A100-contrast: #ffffff,
+  A200: #7A0018,
+  A200-contrast: #ffffff,
+  A400: #B51F2F,
+  A400-contrast: #ffffff,
+  A700: #7A0018,
+  A700-contrast: #ffffff
+);
+
+// #ffcc33
+$custom-gold: (
+  50: #FFF8E2,
+  50-contrast: #000000,
+  100: #FFEDB5,
+  100-contrast: #000000,
+  200: #FFE186,
+  200-contrast: #000000,
+  300: #FFD755,
+  300-contrast: #000000,
+  400: #FFCC33,
+  400-contrast: #000000,
+  500: #FFC31F,
+  500-contrast: #000000,
+  600: #FFB519,
+  600-contrast: #000000,
+  700: #FEA317,
+  700-contrast: #000000,
+  800: #FE9215,
+  800-contrast: #000000,
+  900: #FE7310,
+  900-contrast: #000000,
+  A100: #FFC31F,
+  A100-contrast: #000000,
+  A200: #FE7310,
+  A200-contrast: #000000,
+  A400: #FFC31F,
+  A400-contrast: #000000,
+  A700: #FE7310,
+  A700-contrast: #000000
+);
+
+// Custom Palettes (Commented out as they are incomplete)
+//$light-primary: mat.m2-define-palette($custom-maroon, 500);
+//$light-accent: mat.m2-define-palette($custom-gold, 500);
 
 $light-primary: mat.m2-define-palette(mat.$m2-indigo-palette, 500); // 500 is the base hue of a Material color
 

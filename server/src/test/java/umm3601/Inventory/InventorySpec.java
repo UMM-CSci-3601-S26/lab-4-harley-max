@@ -1,11 +1,16 @@
+// Packages
 package umm3601.Inventory;
 
+// Static Imports
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// Org Imports
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+// InventorySpec Class
 public class InventorySpec {
   private static final String FAKE_ID_STRING_1 = "fakeIdOne";
   private static final String FAKE_ID_STRING_2 = "fakeIdTwo";
@@ -55,7 +60,6 @@ public class InventorySpec {
     assertFalse(inv1.equals(FAKE_ID_STRING_1));
   }
 
-
   @Test
   void nullId() {
     inv1._id = null;
@@ -67,8 +71,6 @@ public class InventorySpec {
 
   @Test
   void inventoryToString() {
-
     assertEquals(inv1.toString(), "Pencil Ticonderoga Ticonderoga Pencil");
   }
-
 }

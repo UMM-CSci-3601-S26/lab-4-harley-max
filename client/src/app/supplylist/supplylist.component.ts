@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, /*viewChild,*/ ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, effect, inject, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -12,7 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-//import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { catchError, combineLatest, debounceTime, of, switchMap } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { SupplyList } from './supplylist';
@@ -27,7 +27,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./supplylist.component.scss'],
   imports: [
     MatTableModule,
-    //MatSortModule,
+    MatSortModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -47,9 +47,9 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SupplyListComponent {
-  //displayedColumns: string[] = ['school', 'grade', 'item', 'description', 'brand', 'color', 'size', 'type', 'material', 'count', 'quantity', 'notes'];
+  displayedColumns: string[] = ['school', 'grade', 'item', 'description', 'brand', 'color', 'size', 'type', 'material', 'count', 'quantity', 'notes'];
   dataSource = new MatTableDataSource<SupplyList>([]);
-  //readonly sort = viewChild<MatSort>(MatSort);
+  readonly sort = viewChild<MatSort>(MatSort);
 
 
   private snackBar = inject(MatSnackBar);
@@ -100,6 +100,64 @@ export class SupplyListComponent {
     ),
     { initialValue: [] }
   );
+
+  /* This function computes a new grouping structure for the supply list every time serverFilteredSupplyList changes
+  * It groups by School, then Grade, then Teacher (if no teacher, it groups them under "N/A"), and then makes an individual "chunk" for each item
+  */
+  groupedSupplyList = computed(() => {
+    // Types for the grouping structure
+    type TeacherGroup = { teacher: string; items: SupplyList[] };
+    type GradeGroup = { grade: string; teachers: TeacherGroup[] };
+    type SchoolGroup = { school: string; grades: GradeGroup[] };
+    const byName = (a: string, b: string) => a.localeCompare(b);
+
+    // Nested map for grouping: school -> grade -> teacher -> items
+    const schoolMap = new Map<string, Map<string, Map<string, SupplyList[]>>>();
+    const getOrCreate = <T>(map: Map<string, T>, key: string, init: () => T) => {
+      if (!map.has(key)) map.set(key, init());
+      return map.get(key)!;
+    };
+
+    // Group supplies by school, grade, and teacher
+    for (const supply of this.serverFilteredSupplyList()) {
+      const school = supply.school || 'Unknown School';
+      const grade = supply.grade || 'Unknown Grade';
+      const teacher = supply.teacher || 'N/A';
+
+      // Make maps for each level of grouping
+      const gradeMap = getOrCreate(schoolMap, school, () => new Map<string, Map<string, SupplyList[]>>());
+      const teacherMap = getOrCreate(gradeMap, grade, () => new Map<string, SupplyList[]>());
+      const items = getOrCreate(teacherMap, teacher, () => []);
+
+      items.push(supply);
+    }
+
+    // Sort schools, grades, and teachers alphabetically
+    const sortedSchools = Array.from(schoolMap.keys()).sort(byName);
+
+    // Turn maps into the proper array structure
+    return sortedSchools.map((school): SchoolGroup => {
+      const gradeMap = schoolMap.get(school)!;
+      const sortedGrades = Array.from(gradeMap.keys()).sort(byName);
+
+      // For each grade, sort teachers and their items
+      return {
+        school,
+        grades: sortedGrades.map((grade): GradeGroup => {
+          const teacherMap = gradeMap.get(grade)!;
+          const sortedTeachers = Array.from(teacherMap.keys()).sort(byName);
+
+          // For each teacher, sort their items by item name
+          return {
+            grade,
+            teachers: sortedTeachers.map((teacher): TeacherGroup => ({
+              teacher,
+              items: teacherMap.get(teacher)!
+            }))
+          };
+        })
+      };
+    });
+  });
 }
 export { SupplyListService };
-

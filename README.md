@@ -1,12 +1,12 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/W5Xj1XiW)
-# CSCI 3601 Iteration Template <!-- omit in toc -->
+# CSCI 3601 - HGBT Iteration 1
 
-- [Development](#development)
-  - [Common commands](#common-commands)
-- [Deployment](#deployment)
-- [Resources](#resources)
-- [Changing the name](#changing-the-name)
-- [Contributors](#contributors)
+- [CSCI 3601 - HGBT Iteration 1](#csci-3601---hgbt-iteration-1)
+  - [Development](#development)
+    - [Common commands](#common-commands)
+  - [Deployment](#deployment)
+  - [Resources](#resources)
+  - [Contributors](#contributors)
 
 This is your starter code for Iteration 1.
 
@@ -61,21 +61,6 @@ Instructions on how to create a DigitalOcean Droplet and setup your project are 
 ## [Resources](RESOURCES.md)
 
 Additional resources on tooling and techniques are in [the resources list](RESOURCES.md).
-
-## Changing the name
-
-The project by default has the name "CSCI 3601 Iteration Template". There are a few places you need to change to make this the name you want:
-
-- The title in this README.md
-- [`client/src/app/app.component.ts`](client/src/app/app.component.ts)
-  - The `title` variable
-  - Also the associated unit and E2E tests will need to be changed.
-- [`client/src/app/app.component.html`](client/src/app/app.component.html)
-  - The `mat-toolbar` element for the navigation drawer is just "Client" by default.
-- [`client/src/index.html`](client/src/index.html)
-  - The `title` element
-
-You can go ahead and remove this section of the README once you have changed the name.
 
 ## Contributors
 

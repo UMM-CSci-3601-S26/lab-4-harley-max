@@ -1,3 +1,4 @@
+// Angular Imports
 import { Component, effect, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,11 +14,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+
+// RxJS Imports
 import { catchError, combineLatest, debounceTime, of, switchMap } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+
+// Inventory Imports
 import { Inventory } from './inventory';
 import { InventoryService } from './inventory.service';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+
 
 @Component({
   selector: 'app-inventory-component',

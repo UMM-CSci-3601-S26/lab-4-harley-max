@@ -1,6 +1,7 @@
 export interface SupplyList {
   school: string,
   grade: string,
+  teacher?: string,
   item: string,
   description: string,
   brand: string,

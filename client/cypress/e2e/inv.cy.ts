@@ -4,35 +4,28 @@ const page = new InventoryPage();
 const Filters_Test = {
   Item: 'Markers',
   Brand: 'Crayola',
+  Color: 'Red',
   Type: 'Washable',
-  Size: 'Wide'
+  Size: 'Wide',
+  Material: 'N/A',
 }
 
 describe('Inventory', () => {
-  beforeEach(() => page.navigateTo());
+  before(() => {
+    cy.task('seed:database');
+  });
+
+  beforeEach(() => {
+    // Intercept the API call before navigating
+    cy.intercept('GET', '/api/inventory*').as('getInventory');
+    page.navigateTo();
+    // Wait for the inventory data to load
+    cy.wait('@getInventory');
+    //nextTick(1000); // Alternate wait method, preferably wait on the API call instead
+  });
 
   it('Should have the correct title', () => {
     page.getAppTitle().should('contain', 'Inventory');
-  });
-
-  it('The sidenav should open, navigate to "Inventory" and back to "Home"', () => {
-    // Before clicking on the button, the sidenav should be hidden
-    page.getSidenav()
-      .should('be.hidden');
-    page.getSidenavButton()
-      .should('be.visible');
-
-    page.getSidenavButton().click();
-    page.getNavLink('Inventory').click();
-    cy.url().should('match', /\/inventory$/);
-    page.getSidenav()
-      .should('be.hidden');
-
-    page.getSidenavButton().click();
-    page.getNavLink('Home').click();
-    cy.url().should('match', /^https?:\/\/[^/]+\/?$/);
-    page.getSidenav()
-      .should('be.hidden');
   });
 
   it('Should display inventory items', () => {
@@ -41,11 +34,12 @@ describe('Inventory', () => {
     cy.url().should('match', /\/inventory$/);
     page.getSidenav()
       .should('be.hidden');
-    nextTick(300)
-    cy.contains('td', 'Test Item').should('exist'); //First item in the table, once 'test item' gets removed, need to update
+    nextTick(1000)
+    cy.contains('td', 'Test Item').should('exist'); // First item in the table
+    // Note: Once 'test item' gets removed, this needs to be updated (possibly update to not check the first?)
   });
 
-  it('should have pagination controls', () => {
+  it('Should have pagination controls', () => {
     page.getSidenavButton().click();
     page.getNavLink('Inventory').click();
     cy.url().should('match', /\/inventory$/);
@@ -69,10 +63,10 @@ describe('Inventory', () => {
     cy.get('@headers').should('contain', 'Notes');
   });
 
-  // Cypress tests to ensure the filter boxes are there
+  // Cypress tests to ensure the filter boxes (including clear button) are there
   // for all specification fields
 
-  it('should have specification filters', () => {
+  it('Should have specification filters', () => {
     page.getSidenavButton().click();
     page.getNavLink('Inventory').click();
     cy.url().should('match', /\/inventory$/);
@@ -84,6 +78,7 @@ describe('Inventory', () => {
       cy.log(message);
       console.warn(message);
     }
+
     cy.get('body').then(($body) => {
       if ($body.find('[data-cy="filter-item"]').length === 0) {
         recordError(`Empty filter input for Item`);
@@ -103,6 +98,9 @@ describe('Inventory', () => {
       if ($body.find('[data-cy="filter-material"]').length === 0) {
         recordError(`Empty filter input for Material`);
       }
+      if ($body.find('[data-cy="filter-clear"]').length === 0) {
+        recordError(`Missing clear filters button`);
+      }
     });
 
     cy.then(() => {
@@ -111,15 +109,24 @@ describe('Inventory', () => {
       }
     });
   });
+
   it("Should be able to take an input and display the correct filtered results", () => {
     page.getSidenavButton().click();
     page.getNavLink('Inventory').click();
     cy.url().should('match', /\/inventory$/);
+
+    // Intercept the filtered API calls
+    cy.intercept('GET', '/api/inventory*').as('filterInventory');
+
     cy.get('[data-cy="filter-item"]').type(Filters_Test.Item);
     cy.get('[data-cy="filter-brand"]').type(Filters_Test.Brand);
     cy.get('[data-cy="filter-type"]').type(Filters_Test.Type);
     cy.get('[data-cy="filter-size"]').type(Filters_Test.Size);
-    nextTick(300);
+
+    // Wait for the filtered results to load
+    //cy.wait('@filterInventory');
+    nextTick(1000);
+
     page.getInventoryRow().first().within(() => {
       cy.get('[data-cy="inventory-item"]').should('contain', Filters_Test.Item);
       cy.get('[data-cy="inventory-brand"]').should('contain', Filters_Test.Brand);
@@ -127,6 +134,42 @@ describe('Inventory', () => {
       cy.get('[data-cy="inventory-size"]').should('contain', Filters_Test.Size);
     });
   });
+
+  it("Should be able to clear the filters via the button", () => {
+    page.getSidenavButton().click();
+    page.getNavLink('Inventory').click();
+    cy.url().should('match', /\/inventory$/);
+
+    // Intercept the filtered API calls
+    cy.intercept('GET', '/api/inventory*').as('filterInventory');
+
+    cy.get('[data-cy="filter-item"]').type(Filters_Test.Item);
+    cy.get('[data-cy="filter-brand"]').type(Filters_Test.Brand);
+    cy.get('[data-cy="filter-type"]').type(Filters_Test.Type);
+    cy.get('[data-cy="filter-size"]').type(Filters_Test.Size);
+
+    // Wait for the filtered results to load
+    cy.wait('@filterInventory');
+    //nextTick(1000); // Alternate wait method, preferably wait on the API call instead
+
+    // Click the clear filters button
+    cy.get('[data-cy="filter-clear"]').click();
+
+    // Wait for the unfiltered results to load
+    cy.wait('@filterInventory');
+    //nextTick(1000); // Alternate wait method, preferably wait on the API call instead
+
+    // Check that the first row is no longer the filtered item
+    page.getInventoryRow().first().within(() => {
+      cy.get('[data-cy="inventory-item"]').should('not.contain', Filters_Test.Item);
+      cy.get('[data-cy="inventory-brand"]').should('not.contain', Filters_Test.Brand);
+      cy.get('[data-cy="inventory-type"]').should('not.contain', Filters_Test.Type);
+      cy.get('[data-cy="inventory-size"]').should('not.contain', Filters_Test.Size);
+    });
+  });
+
+  // Note: The below test should remain empty until a finalized inventory list JSON is used to seed the database.
+
   // it('should report all empty cells across all pages', () => {
   //   page.getSidenavButton().click();
   //   page.getNavLink('Inventory').click();
@@ -201,4 +244,3 @@ describe('Inventory', () => {
 function nextTick(ms: number) {
   cy.wait(ms);
 }
-

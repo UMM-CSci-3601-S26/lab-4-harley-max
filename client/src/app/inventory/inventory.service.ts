@@ -1,6 +1,11 @@
+// Angular Imports
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+
+// RxJS Imports
 import { Observable } from 'rxjs';
+
+// Inventory Imports
 import { Inventory } from './inventory';
 import { environment } from 'src/environments/environment';
 

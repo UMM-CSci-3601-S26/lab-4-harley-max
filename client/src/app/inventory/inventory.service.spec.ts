@@ -1,7 +1,12 @@
+// Angular Imports
 import { HttpClient, HttpParams, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, waitForAsync } from '@angular/core/testing';
+
+// RxJS Imports
 import { of } from 'rxjs';
+
+// Inventory Imports
 import { Inventory } from './inventory';
 import { InventoryService } from './inventory.service';
 
