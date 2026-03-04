@@ -110,25 +110,38 @@ describe('Inventory', () => {
     page.getSidenavButton().click();
     page.getNavLink('Inventory').click();
     cy.url().should('match', /\/inventory$/);
-    cy.intercept('GET', `/api/inventory*`).as('filterInventory');
+
+    cy.get('[data-cy="filter-item"]').clear().type(Filters_Test.Item, {delay: 100});
 
     // Intercept the filtered API calls
-    cy.wait('@filterInventory');
+    //cy.wait('@filterInventory');
+    cy.get(`[data-cy="inventory-table"]`).should('be.visible');
+
+    // set up an intercept to wait for the filters to all be entered
+    cy.intercept({pathname:`/api/inventory`,
+      query: {
+        item: `${Filters_Test.Item}` ,
+        brand:`${Filters_Test.Brand}`,
+        type: `${Filters_Test.Type}` ,
+        size: `${Filters_Test.Size}`
+      }}).as('filterInventoryWithFilters');
 
     cy.get('[data-cy="filter-item"]').clear().type(Filters_Test.Item, {delay: 100});
     cy.get('[data-cy="filter-brand"]').clear().type(Filters_Test.Brand, {delay: 100});
     cy.get('[data-cy="filter-type"]').clear().type(Filters_Test.Type, {delay: 100});
     cy.get('[data-cy="filter-size"]').clear().type(Filters_Test.Size, {delay: 100});
 
-    cy.intercept('GET', `/api/inventory?item=${Filters_Test.Item}&brand=${Filters_Test.Brand}&type=${Filters_Test.Type}&size=${Filters_Test.Size}`).as('filterInventoryWithFilters');
+    // Intercept the filtered API calls (won't happen until debounce is done)
+    // so we won't need to explicitly wait for debounce
     cy.wait('@filterInventoryWithFilters');
+    cy.get(`[data-cy="inventory-table"]`).should('be.visible');
+
     // Wait for debounce (300ms) + buffer to ensure the final API call is made
-    cy.wait(500);
+    //cy.wait(500);
     // Wait for the filtered results to load
 
     // Ensure table has updated with filtered data
-    cy.get(`[data-cy="inventory-table"]`).should('be.visible');
-    cy.get(`[data-cy="inventory-item"]`).should('have.length.at.least', 1);
+    cy.get(`[data-cy="inventory-row"]`).should('have.length.at.least', 1);
 
     // Verify all visible items match the filters
     cy.get(`[data-cy="inventory-item"]`).each(e => cy.wrap(e).should('include.text', Filters_Test.Item));
