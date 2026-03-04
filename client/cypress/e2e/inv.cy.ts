@@ -119,16 +119,20 @@ describe('Inventory', () => {
     cy.get('[data-cy="filter-type"]').type(Filters_Test.Type);
     cy.get('[data-cy="filter-size"]').type(Filters_Test.Size);
 
+    // Wait for debounce (300ms) + buffer to ensure the final API call is made
+    cy.wait(500);
     // Wait for the filtered results to load
     cy.wait('@filterInventory');
-    nextTick(1000);
 
-    cy.get(`[data-cy="inventory-table"]`).should('be.visible').then(() => {
-      cy.get(`[data-cy="inventory-item"]`).each(e => cy.wrap(e).should('include.text', Filters_Test.Item));
-      cy.get(`[data-cy="inventory-brand"]`).each(e => cy.wrap(e).should('include.text', Filters_Test.Brand));
-      cy.get(`[data-cy="inventory-type"]`).each(e => cy.wrap(e).should('include.text', Filters_Test.Type));
-      cy.get(`[data-cy="inventory-size"]`).each(e => cy.wrap(e).should('include.text', Filters_Test.Size));
-    });
+    // Ensure table has updated with filtered data
+    cy.get(`[data-cy="inventory-table"]`).should('be.visible');
+    cy.get(`[data-cy="inventory-item"]`).should('have.length.at.least', 1);
+
+    // Verify all visible items match the filters
+    cy.get(`[data-cy="inventory-item"]`).each(e => cy.wrap(e).should('include.text', Filters_Test.Item));
+    cy.get(`[data-cy="inventory-brand"]`).each(e => cy.wrap(e).should('include.text', Filters_Test.Brand));
+    cy.get(`[data-cy="inventory-type"]`).each(e => cy.wrap(e).should('include.text', Filters_Test.Type));
+    cy.get(`[data-cy="inventory-size"]`).each(e => cy.wrap(e).should('include.text', Filters_Test.Size));
   });
 
   it("Should be able to clear the filters via the button", () => {
