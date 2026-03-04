@@ -3,7 +3,7 @@
 
     <mat-card class="search-grid">
       <mat-card-header>
-        <mat-card-title class="supplylist-title">Inventory</mat-card-title>
+        <mat-card-title class="supplylist-title">SupplyList</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <mat-form-field appearance="outline">
@@ -84,14 +84,14 @@
     @for (element of serverFilteredSupplyList(); track $index) {
       <mat-list-item role="Display Items">
         <div class = "list-style">
-          <div class="field"><strong>School:</strong> {{ element.school}} </div>
-          <div class="field"><strong>Grade:</strong> {{ element.grade}} </div>
-          <div class="field"><strong>Item:</strong> {{ element.item }}</div>
-          <div class="field"><strong>Brand:</strong> {{ element.brand }}</div>
-          <div class="field"><strong>Color:</strong> {{ element.color }}</div>
-          <div class="field"><strong>Size:</strong> {{ element.size }}</div>
-          <div class="field"><strong>Type:</strong> {{ element.type }}</div>
-          <div class="field"><strong>Material:</strong> {{ element.material }}</div>
+          <div class="field" data-cy="supplylist-school"><strong>School:</strong> {{ element.school}} </div>
+          <div class="field" data-cy="supplylist-grade"><strong>Grade:</strong> {{ element.grade}} </div>
+          <div class="field" data-cy="supplylist-item"><strong>Item:</strong> {{ element.item }}</div>
+          <div class="field" data-cy="supplylist-brand"><strong>Brand:</strong> {{ element.brand }}</div>
+          <div class="field" data-cy="supplylist-color"><strong>Color:</strong> {{ element.color }}</div>
+          <div class="field" data-cy="supplylist-size"><strong>Size:</strong> {{ element.size }}</div>
+          <div class="field" data-cy="supplylist-type"><strong>Type:</strong> {{ element.type }}</div>
+          <div class="field" data-cy="supplylist-material"><strong>Material:</strong> {{ element.material }}</div>
         </div>
       </mat-list-item>
     }
