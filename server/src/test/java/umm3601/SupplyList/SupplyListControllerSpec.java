@@ -336,6 +336,20 @@ public class SupplyListControllerSpec {
     assertEquals("shoulder bag", supplylistArrayCaptor.getValue().get(0).type);
   }
 
+
+  @Test
+  void canFilterSupplyListBySchoolCaseInsensitive() {
+    when(ctx.queryParamMap()).thenReturn(Map.of("school", List.of("MHS")));
+    when(ctx.queryParam("school")).thenReturn("MHS");
+    supplylistController.getSupplyLists(ctx);
+
+    verify(ctx).json(supplylistArrayCaptor.capture());
+    verify(ctx).status(HttpStatus.OK);
+
+    assertEquals(3, supplylistArrayCaptor.getValue().size());
+    assertEquals("MHS", supplylistArrayCaptor.getValue().get(0).school);
+  }
+
   @Test
   void addsRoutes() {
     Javalin mockServer = mock(Javalin.class);
