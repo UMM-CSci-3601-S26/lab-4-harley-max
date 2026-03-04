@@ -110,23 +110,25 @@ describe('Inventory', () => {
     page.getSidenavButton().click();
     page.getNavLink('Inventory').click();
     cy.url().should('match', /\/inventory$/);
+    cy.intercept('GET', `/api/inventory*`).as('filterInventory');
 
     // Intercept the filtered API calls
-    cy.intercept('GET', '/api/inventory*').as('filterInventory');
+    cy.wait('@filterInventory');
 
-    cy.get('[data-cy="filter-item"]').clear().type(Filters_Test.Item, {delay: 300});
-    cy.get('[data-cy="filter-brand"]').clear().type(Filters_Test.Brand, {delay: 300});
-    cy.get('[data-cy="filter-type"]').clear().type(Filters_Test.Type, {delay: 300});
-    cy.get('[data-cy="filter-size"]').clear().type(Filters_Test.Size, {delay: 300});
+    cy.get('[data-cy="filter-item"]').clear().type(Filters_Test.Item, {delay: 100});
+    cy.get('[data-cy="filter-brand"]').clear().type(Filters_Test.Brand, {delay: 100});
+    cy.get('[data-cy="filter-type"]').clear().type(Filters_Test.Type, {delay: 100});
+    cy.get('[data-cy="filter-size"]').clear().type(Filters_Test.Size, {delay: 100});
 
+    cy.intercept('GET', `/api/inventory?item=${Filters_Test.Item}&brand=${Filters_Test.Brand}&type=${Filters_Test.Type}&size=${Filters_Test.Size}`).as('filterInventoryWithFilters');
+    cy.wait('@filterInventoryWithFilters');
     // Wait for debounce (300ms) + buffer to ensure the final API call is made
     cy.wait(500);
     // Wait for the filtered results to load
-    cy.wait('@filterInventory');
 
     // Ensure table has updated with filtered data
     cy.get(`[data-cy="inventory-table"]`).should('be.visible');
-    cy.get(`[data-cy="inventory-row"]`).should('have.length.at.least', 1);
+    cy.get(`[data-cy="inventory-item"]`).should('have.length.at.least', 1);
 
     // Verify all visible items match the filters
     cy.get(`[data-cy="inventory-item"]`).each(e => cy.wrap(e).should('include.text', Filters_Test.Item));
