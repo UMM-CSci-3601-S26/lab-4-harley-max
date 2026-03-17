@@ -28,7 +28,7 @@ export class InventoryService {
   private readonly quantityKey = 'quantity';
   private readonly notesKey = 'notes';
 
-  itemTypeOptions = [
+  itemOptions = [
     { value: 'pencil', label: 'Pencils' },
     { value: 'colored_pencil', label: 'Colored Pencils' },
     { value: 'sharpener', label: 'Sharpeners' },
@@ -54,7 +54,7 @@ export class InventoryService {
     { value: 'other', label: 'Other' }
   ];
 
-  brandTypeOptions = [
+  brandOptions = [
     { value: 'Kleenex', label: 'Kleenex' },
     { value: 'Sharpie', label: 'Sharpie' },
     { value: 'Texas Instruments', label: 'Texas Instruments' },
@@ -68,7 +68,7 @@ export class InventoryService {
     { value: 'other', label: 'Other' }
   ];
 
-  colorTypeOptions = [
+  colorOptions = [
     { value: 'red', label: 'Red' },
     { value: 'blue', label: 'Blue' },
     { value: 'yellow', label: 'Yellow' },

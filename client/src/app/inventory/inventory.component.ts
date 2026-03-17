@@ -24,6 +24,10 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Inventory } from './inventory';
 import { InventoryService } from './inventory.service';
 
+// Dropdown
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+
 
 @Component({
   selector: 'app-inventory-component',
@@ -38,6 +42,7 @@ import { InventoryService } from './inventory.service';
     MatInputModule,
     FormsModule,
     MatSelectModule,
+    MatAutocompleteModule,
     MatOptionModule,
     MatRadioModule,
     MatListModule,
@@ -72,6 +77,16 @@ export class InventoryComponent {
   material = signal<string | undefined>(undefined);
   description = signal<string | undefined>(undefined);
   quantity = signal<number | undefined>(undefined);
+
+
+  //client side filtering???
+  filteredTypeOptions = computed(() => {
+    const input = (this.item() || '').toLowerCase();
+    if (!input) return this.inventoryService.itemOptions;
+    return this.inventoryService.itemOptions.filter(option =>
+      option.label.toLowerCase().includes(input) || option.value.toLowerCase().includes(input)
+    );
+  });
 
   errMsg = signal<string | undefined>(undefined);
 
