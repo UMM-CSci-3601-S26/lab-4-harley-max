@@ -1,5 +1,5 @@
 // Angular Imports
-import { Component, effect, inject, signal, viewChild } from '@angular/core';
+import { Component, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -79,14 +79,50 @@ export class InventoryComponent {
   quantity = signal<number | undefined>(undefined);
 
 
-  //client side filtering???
-  filteredTypeOptions = computed(() => {
+  //item options
+  filteredItemOptions = computed(() => {
     const input = (this.item() || '').toLowerCase();
     if (!input) return this.inventoryService.itemOptions;
     return this.inventoryService.itemOptions.filter(option =>
       option.label.toLowerCase().includes(input) || option.value.toLowerCase().includes(input)
     );
   });
+
+  //color options
+  filteredColorOptions = computed(() => {
+    const colorInput = (this.color() || '').toLowerCase();
+    if (!colorInput) return this.inventoryService.colorOptions;
+    return this.inventoryService.colorOptions.filter(option =>
+      option.label.toLowerCase().includes(colorInput) || option.value.toLowerCase().includes(colorInput)
+    );
+  });
+
+  //brand options
+  filteredBrandOptions = computed(() => {
+    const input = (this.brand() || '').toLowerCase();
+    if (!input) return this.inventoryService.brandOptions;
+    return this.inventoryService.brandOptions.filter(option =>
+      option.label.toLowerCase().includes(input) || option.value.toLowerCase().includes(input)
+    );
+  });
+
+  displayItemLabel = (value: string | null): string => {
+    if (!value) return '';
+    const match = this.filteredItemOptions().find(option => option.value === value);
+    return match ? match.label : value;
+  };
+
+  displayColorLabel = (value: string | null): string => {
+    if (!value) return '';
+    const match = this.filteredColorOptions().find(option => option.value === value);
+    return match ? match.label : value;
+  };
+
+  displayBrandLabel = (value: string | null): string => {
+    if (!value) return '';
+    const match = this.filteredBrandOptions().find(option => option.value === value);
+    return match ? match.label : value;
+  };
 
   errMsg = signal<string | undefined>(undefined);
 

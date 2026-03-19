@@ -30,11 +30,10 @@ export class InventoryService {
 
   itemOptions = [
     { value: 'pencil', label: 'Pencils' },
-    { value: 'colored_pencil', label: 'Colored Pencils' },
+    { value: 'colored pencil', label: 'Colored Pencils' },
     { value: 'sharpener', label: 'Sharpeners' },
     { value: 'marker', label: 'Markers' },
     { value: 'highlighter', label: 'Highlighters' },
-    { value: 'dry_erase_marker', label: 'Dry-Erase Markers' },
     { value: 'crayon', label: 'Crayons' },
     { value: 'pen', label: 'Pens' },
     { value: 'eraser', label: 'Erasers' },
@@ -49,7 +48,7 @@ export class InventoryService {
     { value: 'box', label: 'Boxes' },
     { value: 'calculator', label: 'Calculators' },
     { value: 'tissue', label: 'Tissues' },
-    { value: 'water_bottle', label: 'Water-Bottle' },
+    { value: 'water bottle', label: 'Water Bottle' },
     { value: 'wipe', label: 'Wipes' },
     { value: 'other', label: 'Other' }
   ];

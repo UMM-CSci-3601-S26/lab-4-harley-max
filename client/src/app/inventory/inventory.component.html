@@ -17,37 +17,38 @@
 
         <!-- Filter Fields -->
         <div class="filter-container">
+
           <mat-form-field appearance="outline">
-            <mat-label class="filter">Item</mat-label>
-            <input
-              matInput
-              [ngModel]="item() ?? ''"
-              (ngModelChange)="item.set($event?.trim() || undefined)"
-              placeholder="contains..."
-              data-cy="filter-item"
-            />
+            <mat-label>Item</mat-label>
+            <input matInput placeholder="Any Item" [(ngModel)]="item" [matAutocomplete]="itemAuto" data-test="DescriptionSelect">
+            <mat-autocomplete #itemAuto="matAutocomplete" [displayWith]="displayItemLabel">
+              <mat-option>Any Item</mat-option>
+              @for (option of filteredItemOptions(); track option.value) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
+              }
+            </mat-autocomplete>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label class="filter">Brand</mat-label>
-            <input
-              matInput
-              [ngModel]="brand() ?? ''"
-              (ngModelChange)="brand.set($event?.trim() || undefined)"
-              placeholder="contains..."
-              data-cy="filter-brand"
-            />
+            <mat-label>Brand</mat-label>
+            <input matInput placeholder="Any Brand" [(ngModel)]="brand" [matAutocomplete]="brandAuto" data-test="DescriptionSelect">
+            <mat-autocomplete #brandAuto="matAutocomplete" [displayWith]="displayBrandLabel">
+              <mat-option>Any Brand</mat-option>
+              @for (option of filteredBrandOptions(); track option.value) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
+              }
+            </mat-autocomplete>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label class="filter">Color</mat-label>
-            <input
-              matInput
-              [ngModel]="color() ?? ''"
-              (ngModelChange)="color.set($event?.trim() || undefined)"
-              placeholder="contains..."
-              data-cy="filter-color"
-            />
+            <mat-label>Color</mat-label>
+            <input matInput placeholder="Any Color" [(ngModel)]="color" [matAutocomplete]="colorAuto" data-test="DescriptionSelect">
+            <mat-autocomplete #colorAuto="matAutocomplete" [displayWith]="displayColorLabel">
+              <mat-option>Any Color</mat-option>
+              @for (option of filteredColorOptions(); track option.value) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
+              }
+            </mat-autocomplete>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -81,42 +82,6 @@
               placeholder="contains..."
               data-cy="filter-material"
             />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Item</mat-label>
-            <input matInput placeholder="Any Item" [(ngModel)]="item" [matAutocomplete]="auto" data-test="DescriptionSelect">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option>Any Item</mat-option>
-              @for (option of filteredItemOptions(); track option.value) {
-                <mat-option [value]="option.value">{{ option.label }}</mat-option>
-              }
-            </mat-autocomplete>
-            <mat-hint>Search by type</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Color</mat-label>
-            <input matInput placeholder="Any Color" [(ngModel)]="color" [matAutocomplete]="auto" data-test="DescriptionSelect">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option>Any Color</mat-option>
-              @for (option of filteredColorOptions(); track option.value) {
-                <mat-option [value]="option.value">{{ option.label }}</mat-option>
-              }
-            </mat-autocomplete>
-            <mat-hint>Search by Color</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Brand</mat-label>
-            <input matInput placeholder="Any Brand" [(ngModel)]="brand" [matAutocomplete]="auto" data-test="DescriptionSelect">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option>Any Brand</mat-option>
-              @for (option of filteredBrandOptions(); track option.value) {
-                <mat-option [value]="option.value">{{ option.label }}</mat-option>
-              }
-            </mat-autocomplete>
-            <mat-hint>Search by Brand</mat-hint>
           </mat-form-field>
 
         </div>
