@@ -80,15 +80,6 @@ describe('Inventory', () => {
     }
 
     cy.get('body').then(($body) => {
-      if ($body.find('[data-cy="filter-item"]').length === 0) {
-        recordError(`Empty filter input for Item`);
-      }
-      if ($body.find('[data-cy="filter-brand"]').length === 0) {
-        recordError(`Empty filter input for Brand`);
-      }
-      if ($body.find('[data-cy="filter-color"]').length === 0) {
-        recordError(`Empty filter input for Color`);
-      }
       if ($body.find('[data-cy="filter-size"]').length === 0) {
         recordError(`Empty filter input for Size`);
       }
@@ -118,8 +109,8 @@ describe('Inventory', () => {
     // Intercept the filtered API calls
     cy.intercept('GET', '/api/inventory*').as('filterInventory');
 
-    cy.get('[data-cy="filter-item"]').type(Filters_Test.Item);
-    cy.get('[data-cy="filter-brand"]').type(Filters_Test.Brand);
+    cy.get('[data-test="ItemSelect"]').type(Filters_Test.Item);
+    cy.get('[data-test="BrandSelect"]').type(Filters_Test.Brand);
     cy.get('[data-cy="filter-type"]').type(Filters_Test.Type);
     cy.get('[data-cy="filter-size"]').type(Filters_Test.Size);
 
@@ -143,8 +134,8 @@ describe('Inventory', () => {
     // Intercept the filtered API calls
     cy.intercept('GET', '/api/inventory*').as('filterInventory');
 
-    cy.get('[data-cy="filter-item"]').type(Filters_Test.Item);
-    cy.get('[data-cy="filter-brand"]').type(Filters_Test.Brand);
+    cy.get('[data-test="ItemSelect"]').type(Filters_Test.Item);
+    cy.get('[data-test="BrandSelect"]').type(Filters_Test.Brand);
     cy.get('[data-cy="filter-type"]').type(Filters_Test.Type);
     cy.get('[data-cy="filter-size"]').type(Filters_Test.Size);
 

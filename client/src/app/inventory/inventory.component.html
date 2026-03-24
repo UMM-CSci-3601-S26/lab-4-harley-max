@@ -20,7 +20,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Item</mat-label>
-            <input matInput placeholder="Any Item" [(ngModel)]="item" [matAutocomplete]="itemAuto" data-test="DescriptionSelect">
+            <input matInput placeholder="Any Item" [(ngModel)]="item" [matAutocomplete]="itemAuto" data-test="ItemSelect">
             <mat-autocomplete #itemAuto="matAutocomplete" [displayWith]="displayItemLabel">
               <mat-option>Any Item</mat-option>
               @for (option of filteredItemOptions(); track option.value) {
@@ -31,7 +31,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Brand</mat-label>
-            <input matInput placeholder="Any Brand" [(ngModel)]="brand" [matAutocomplete]="brandAuto" data-test="DescriptionSelect">
+            <input matInput placeholder="Any Brand" [(ngModel)]="brand" [matAutocomplete]="brandAuto" data-test="BrandSelect">
             <mat-autocomplete #brandAuto="matAutocomplete" [displayWith]="displayBrandLabel">
               <mat-option>Any Brand</mat-option>
               @for (option of filteredBrandOptions(); track option.value) {
@@ -42,7 +42,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Color</mat-label>
-            <input matInput placeholder="Any Color" [(ngModel)]="color" [matAutocomplete]="colorAuto" data-test="DescriptionSelect">
+            <input matInput placeholder="Any Color" [(ngModel)]="color" [matAutocomplete]="colorAuto" data-test="ColorSelect">
             <mat-autocomplete #colorAuto="matAutocomplete" [displayWith]="displayColorLabel">
               <mat-option>Any Color</mat-option>
               @for (option of filteredColorOptions(); track option.value) {
