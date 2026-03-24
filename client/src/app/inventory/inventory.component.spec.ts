@@ -98,6 +98,54 @@ describe('Inventory Table', () => {
     expect(spy).toHaveBeenCalledWith({ item: undefined, brand: undefined, color: undefined, size: 'Wide Ruled', type: undefined, material: undefined });
   }));
 
+  it('should return the item label when value matches an option', () => {
+    inventoryTable.item.set(undefined); // No filter, all options available
+    fixture.detectChanges();
+    const result = inventoryTable.displayItemLabel('marker');
+    expect(result).toBe('Markers');
+  });
+
+  it('should return the item value when no match is found', () => {
+    inventoryTable.item.set(undefined); // No filter, all options available
+    fixture.detectChanges();
+    const result = inventoryTable.displayItemLabel('nonexistent');
+    expect(result).toBe('nonexistent');
+  });
+
+  it('should return empty string when item value is null', () => {
+    const result = inventoryTable.displayItemLabel(null);
+    expect(result).toBe('');
+  });
+
+  it('should return empty string when item value is undefined', () => {
+    const result = inventoryTable.displayItemLabel(undefined);
+    expect(result).toBe('');
+  });
+
+  it('should return the color label when value matches an option', () => {
+    inventoryTable.color.set(undefined); // No filter, all options available
+    fixture.detectChanges();
+    const result = inventoryTable.displayColorLabel('red');
+    expect(result).toBe('Red');
+  });
+
+  it('should return the color value when no match is found', () => {
+    inventoryTable.color.set(undefined); // No filter, all options available
+    fixture.detectChanges();
+    const result = inventoryTable.displayColorLabel('nonexistent');
+    expect(result).toBe('nonexistent');
+  });
+
+  it('should return empty string when color value is null', () => {
+    const result = inventoryTable.displayColorLabel(null);
+    expect(result).toBe('');
+  });
+
+  it('should return empty string when color value is undefined', () => {
+    const result = inventoryTable.displayColorLabel(undefined);
+    expect(result).toBe('');
+  });
+
   it('should call getInventory() when type signal changes', fakeAsync(() => {
     const spy = spyOn(inventoryService, 'getInventory').and.callThrough();
     inventoryTable.type.set('Spiral');
